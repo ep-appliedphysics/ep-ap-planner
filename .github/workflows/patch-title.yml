@@ -1,0 +1,37 @@
+name: Patch title
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update heading string in JS
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          old = "Applied Physics M.S. Course Planner"
+          new = "APPLIED PHYSICS | COURSE PLANNER"
+          changed = False
+          for p in Path(".").rglob("*.js"):
+              t = p.read_text(encoding="utf-8")
+              if old in t:
+                  p.write_text(t.replace(old, new), encoding="utf-8")
+                  print("patched", p)
+                  changed = True
+          if not changed:
+              print("no heading string found (already patched?)")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -u
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "Set heading to APPLIED PHYSICS | COURSE PLANNER"
+            git push
+          fi
