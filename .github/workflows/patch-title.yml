@@ -1,4 +1,4 @@
-name: Patch title
+name: Patch copy
 on:
   push:
     branches: [main]
@@ -10,28 +10,47 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Update heading string in JS
+      - name: Replace copy in JS bundles
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          old = "Applied Physics M.S. Course Planner"
-          new = "APPLIED PHYSICS | COURSE PLANNER"
-          changed = False
-          for p in Path(".").rglob("*.js"):
+          repls = [
+            ("shortName:`Photonics`", "shortName:`Applied Optics and Photonics`"),
+            ("shortName:`Space & Earth`", "shortName:`Space & Earth Science`"),
+            ("label:`Space & Earth cores`", "label:`Space & Earth Science cores`"),
+            ("ql(`ses-core`,`Space & Earth cores`", "ql(`ses-core`,`Space & Earth Science cores`"),
+            (
+              "(0,U.jsx)(dg,{children:`Host on Canvas`}),(0,U.jsxs)(lg,{onClick:()=>wg(),children:[(0,U.jsx)(Mu,{className:`size-4`}),`Blank planner HTML`]}),(0,U.jsx)(ug,{}),",
+              "",
+            ),
+            (
+              ". Use Export → Blank planner HTML to upload the tool to Canvas Files. Students can download that file, plan in the browser, then save their own HTML to restore later.",
+              ". Students can export an HTML or JSON copy of their plan and import it later to restore progress.",
+            ),
+            (
+              "font-display mt-2 text-3xl leading-none md:text-5xl",
+              "font-display mt-2 text-xl tracking-wide md:text-2xl",
+            ),
+          ]
+          changed_files = []
+          for p in list(Path(".").rglob("*.js")):
               t = p.read_text(encoding="utf-8")
-              if old in t:
-                  p.write_text(t.replace(old, new), encoding="utf-8")
+              orig = t
+              for a, b in repls:
+                  t = t.replace(a, b)
+              if t != orig:
+                  p.write_text(t, encoding="utf-8")
+                  changed_files.append(str(p))
                   print("patched", p)
-                  changed = True
-          if not changed:
-              print("no heading string found (already patched?)")
+          if not changed_files:
+              print("no replacements matched")
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -u
+          git add -u "*.js" assets || true
           if git diff --cached --quiet; then
             echo "nothing to commit"
           else
-            git commit -m "Set heading to APPLIED PHYSICS | COURSE PLANNER"
+            git commit -m "Apply planner copy updates"
             git push
           fi
