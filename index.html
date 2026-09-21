@@ -31,29 +31,5 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      function applyCopyFixes() {
-        const h1 = document.querySelector("header h1");
-        if (h1) h1.textContent = "APPLIED PHYSICS | COURSE PLANNER";
-        document.querySelectorAll("footer p").forEach((p) => {
-          if (p.textContent.includes("Canvas Files") || p.textContent.includes("Blank planner HTML")) {
-            p.innerHTML =
-              'Course pages open on <a class="text-gold underline-offset-2 hover:underline" href="https://ep.jhu.edu/programs/applied-physics/">ep.jhu.edu</a>. Students can export an HTML or JSON copy of their plan and import it later to restore progress.';
-          }
-        });
-        document.querySelectorAll("*").forEach((el) => {
-          if (el.children.length) return;
-          const t = (el.textContent || "").trim();
-          if (t === "Host on Canvas" || t === "Blank planner HTML") {
-            const hide = el.closest("[role='menuitem']") || el.parentElement || el;
-            hide.style.display = "none";
-          }
-        });
-      }
-      new MutationObserver(applyCopyFixes).observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-      });
-    </script>
   </body>
 </html>
