@@ -1,0 +1,26 @@
+name: Copy assets
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Place bundles in assets/
+        run: |
+          mkdir -p assets
+          cp -f index-Dp8R7qwy.js assets/index-Dp8R7qwy.js
+          cp -f index-cQHv76cZ.css assets/index-cQHv76cZ.css
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets
+          if git diff --cached --quiet; then
+            echo "assets already in place"
+          else
+            git commit -m "Copy planner bundles into assets/"
+            git push
+          fi
