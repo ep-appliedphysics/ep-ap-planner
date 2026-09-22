@@ -58,7 +58,7 @@ Error generating stack: `+e.message+`
   <title>APPLIED PHYSICS | COURSE PLANNER</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #000000; --surface: #000000; --ink: #ffffff; --muted: #68ace5;
@@ -68,7 +68,7 @@ Error generating stack: `+e.message+`
       --other: #31261d; --warn: #f1c400;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; font: 15px/1.5 "Century Gothic", "CenturyGothic", "AppleGothic", "TeX Gyre Adventor", sans-serif; background: var(--bg); color: var(--ink); }
+    body { margin: 0; font: 15px/1.5 "Work Sans", Tahoma, system-ui, sans-serif; background: var(--bg); color: var(--ink); }
     h1,h2,h3 { font-family: "Oswald", Tahoma, sans-serif; font-weight: 500; letter-spacing: 0.04em; }
     header { background: var(--navy); color: var(--ink); padding: 18px 22px 16px; border-top: 4px solid var(--gold); }
     header p { margin: 6px 0 0; color: var(--ink); max-width: 70ch; }
